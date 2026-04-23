@@ -1,17 +1,14 @@
 import os
-from dotenv import load_dotenv
 from groq import Groq
-from query import query_db
+from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # loads GROQ_API_KEY from .env
 
-def answer_with_llm(question):
-    results = query_db(question)
-    context = "\n".join([r.page_content for r in results])
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+def ask_groq(question, context=""):
     response = client.chat.completions.create(
-        model="llama3-70b-8192",
+        model="openai/gpt-oss-120b",   
         messages=[
             {"role": "system", "content": "You are a helpful customer support assistant."},
             {"role": "user", "content": f"Answer using this context:\n{context}\n\nQuestion: {question}"}
@@ -19,3 +16,7 @@ def answer_with_llm(question):
         temperature=0
     )
     return response.choices[0].message.content
+
+if __name__ == "__main__":
+    q = input("Ask: ")
+    print(ask_groq(q))
