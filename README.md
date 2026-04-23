@@ -14,8 +14,6 @@ The assistant is designed to answer only when the knowledge base provides releva
 ---
 
 ## 🏗️ Architecture
-![Architecture Diagram](Project_Folder_Structure.jpeg)
-
 **Flow:**
 1. **Data Ingestion** → PDF chunks stored in ChromaDB.  
 2. **Query Retrieval** → Semantic search returns context + confidence score.  
