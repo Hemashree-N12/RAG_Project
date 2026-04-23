@@ -2,26 +2,28 @@ import os
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 
-def ingest_pdf(pdf_path="database/knowledge_base.pdf", persist_dir="chroma_store"):
-    if not os.path.exists(pdf_path):
-        print(f"❌ PDF not found at {pdf_path}. Place your file here first.")
-        return
-
+def ingest_pdf():
+    pdf_path = "database/knowledge_base.pdf"
     print(f"📥 Loading PDF: {pdf_path}")
+
     loader = PyPDFLoader(pdf_path)
     documents = loader.load()
 
-    splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    chunks = splitter.split_documents(documents)
+    # Split into chunks
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    docs = text_splitter.split_documents(documents)
+    print(f"🔢 Created {len(docs)} chunks. Generating embeddings...")
 
-    print(f"🔢 Created {len(chunks)} chunks. Generating embeddings...")
+    # Initialize embeddings
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    db = Chroma.from_documents(chunks, embeddings, persist_directory=persist_dir)
-    db.persist()
 
-    print(f"✅ Ingested {len(chunks)} chunks into {persist_dir}")
+    # Create Chroma DB (persistent)
+    persist_dir = "chroma_store"
+    db = Chroma.from_documents(docs, embeddings, persist_directory=persist_dir)
+
+    print("✅ Ingestion complete. Embeddings stored in ChromaDB.")
 
 if __name__ == "__main__":
     ingest_pdf()
