@@ -34,7 +34,7 @@ The assistant is designed to answer only when the knowledge base provides releva
    source rag_env/bin/activate   # Linux/Mac
    rag_env\Scripts\activate      # Windows
    ```
-   `[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`
+   `[Checkout the output in screenshots]`
 
 3. Install dependencies:
    ```bash
