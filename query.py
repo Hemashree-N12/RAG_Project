@@ -1,17 +1,36 @@
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
+import os
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
 
-def query_db(question, persist_dir="chroma_store"):
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    db = Chroma(persist_directory=persist_dir, embedding_function=embeddings)
-    results = db.similarity_search(question, k=3)
-    return results
+persist_dir = "chroma_store"
+
+# Initialize embeddings
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
+# Load the Chroma database
+db = Chroma(persist_directory=persist_dir, embedding_function=embeddings)
+
+def run_query(query: str):
+    """
+    Run a semantic search query against the Chroma database.
+    Returns: (context, confidence)
+    """
+    results = db.similarity_search_with_score(query, k=3)
+
+    # Build context from top results
+    context = "\n".join([doc.page_content for doc, _ in results])
+
+    if results:
+        scores = [score for _, score in results]
+        avg_score = sum(scores) / len(scores)
+        confidence = max(0.0, 1.0 - avg_score / 50.0)
+    else:
+        confidence = 0.0
+
+    return context, confidence
 
 if __name__ == "__main__":
-    while True:
-        q = input("Ask a question: ")
-        if q.lower() in ["exit", "quit"]:
-            break
-        answers = query_db(q)
-        for i, ans in enumerate(answers, 1):
-            print(f"\nResult {i}:\n{ans.page_content}\n")
+    q = input("Enter your query: ")
+    context, confidence = run_query(q)
+    print("Context:\n", context)
+    print("Confidence:", confidence)
