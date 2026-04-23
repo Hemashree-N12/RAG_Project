@@ -49,7 +49,7 @@ The assistant is designed to answer only when the knowledge base provides releva
 ```bash
 python ingest.py
 ```
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`
+`[Checkout the output in screenshots]`
 
 ---
 
@@ -57,10 +57,8 @@ python ingest.py
 ```bash
 python query.py
 ```
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`
+`[Checkout the output in screenshots]`
 
----
 
 ### 3. Workflow Execution
 ```bash
@@ -69,8 +67,7 @@ python workflow.py
 - Relevant query → Groq answer  
 - Irrelevant query → HITL escalation  
 
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`  
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`
+`[Checkout the output in screenshots]`
 
 ---
 
@@ -81,10 +78,7 @@ streamlit run app.py
 - Green box → Groq answer (RAG)  
 - Red box → HITL escalation  
 
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`  
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`  
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`  
-`[Looks like the result wasn't safe to show. Let's switch things up and try something else!]`
+`[Checkout the output in screenshots]`
 
 ---
 
@@ -106,7 +100,7 @@ streamlit run app.py
 ---
 
 ## 📸 Screenshots
-All outputs are documented in the `[Looks like the result wasn't safe to show. Let's switch things up and try something else!]` folder:
+All outputs are documented in the OutPut-Screenshots folder:
 - Data ingestion  
 - Query retrieval  
 - Workflow execution (RAG + HITL)  
